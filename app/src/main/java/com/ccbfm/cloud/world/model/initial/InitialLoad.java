@@ -57,7 +57,7 @@ public class InitialLoad extends LoadModel {
 
     @Override
     protected Point initPoint() {
-        return new Point(8,0);
+        return new Point(33,9);
     }
 
 }
