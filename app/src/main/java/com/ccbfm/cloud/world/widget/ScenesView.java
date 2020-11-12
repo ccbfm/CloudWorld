@@ -17,7 +17,7 @@ public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventLis
     private Sprite[][] mSprites;
     private boolean mIsHelpLine = false;
     private int[][] mScenesMap;
-    private int mCX, mCY;
+    private int mOX, mOY;
 
     public ScenesView(Context context, int width, int height) {
         super(context, width, height);
@@ -71,35 +71,76 @@ public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventLis
         int ox, oy;
         if (mx < column) {
             ox = (column - mx) >> 1;
-        } else if(mx > column){
-            ox = 0;
+        } else if (mx > column) {
+            int psx = column >> 1;
+            int pmx = column - mx;
+            if (init) {
+                ox = psx - cx;
+                LogUtils.w("wds", "psx=" + psx + ",cx=" + cx + "," + ox + ",pmx=" + pmx);
+            } else {
+                LogUtils.w("wds", "cx=" + cx + ",mOX=" + mOX);
+                int mmx = cx - mOX;
+                ox = psx - mmx;
+                int ptx = ox - mOX;
+                cx = cx + ptx;
+                LogUtils.w("wds", "ox=" + ox + ",mmx=" + mmx + ",ptx=" + ptx + ",cx=" + cx);
+            }
+            LogUtils.w("wds", "ox=" + ox);
+            if (ox >= 0) {
+                //cx = cx + (0 - ox);
+                cx = cx - ox;
+                ox = 0;
+            } else if (ox <= pmx) {
+                cx = cx + (pmx - ox);
+                ox = pmx;
+            }
+            mOX = ox;
         } else {
             ox = 0;
         }
 
         if (my < row) {
             oy = (row - my) >> 1;
-        } else if(my > row){
-            oy = 0;
+        } else if (my > row) {
+            int psy = row >> 1;
+            int pmy = row - my;
+            if (init) {
+                oy = psy - cy;
+            } else {
+                int mmy = cy - mOY;
+                oy = psy - mmy;
+                int pty = oy - mOY;
+                cy = cy + pty;
+            }
+            if (oy >= 0) {
+                //cy = cy + (0 - oy);
+                cy = cx - oy;
+                oy = 0;
+            } else if (oy <= pmy) {
+                cy = cy + (pmy - oy);
+                oy = pmy;
+            }
+            mOY = oy;
         } else {
             oy = 0;
         }
 
-        if(init){
+        if (init) {
             cx = ox + cx;
             cy = oy + cy;
         }
 
-        if(cx < ox || cx >= ox + mx || cy < oy || cy >= oy + my){
+        if (cx < ox || cx >= ox + mx || cy < oy || cy >= oy + my) {
+            LogUtils.w("wds", "ox=ffff" + (cx < ox) + "," + (cx >= ox + mx));
             return false;
         }
-
+        LogUtils.w("wds", "ox=" + ox + "," + oy + "," + cx + "," + cy);
         for (int i = 0; i < row; i++) {
             int ty = i - oy;
             for (int j = 0; j < column; j++) {
                 int tx = j - ox;
-                if(tx >= 0 && tx < mx && ty >= 0 && ty < my) {
-                    if(j == cx && i == cy){
+                if (tx >= 0 && tx < mx && ty >= 0 && ty < my) {
+                    if (j == cx && i == cy) {
                         mSprites[i][j].updateView(j, i, SpriteType.CIRCLE);
                     } else {
                         mSprites[i][j].updateView(j, i, map[ty][tx]);
@@ -109,8 +150,6 @@ public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventLis
                 }
             }
         }
-        mCX = cx;
-        mCY = cy;
         return true;
     }
 
@@ -120,7 +159,7 @@ public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventLis
         if (mScenesMap == null) {
             return;
         }
-        if(handleUpdate(mScenesMap, x, y, false)){
+        if (handleUpdate(mScenesMap, x, y, false)) {
 
         }
     }

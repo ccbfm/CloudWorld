@@ -8,8 +8,6 @@ import android.view.View;
 
 import com.ccbfm.cloud.world.model.SpriteType;
 
-import java.util.Random;
-
 public class Sprite extends BaseSprite implements View.OnClickListener, View.OnLongClickListener {
 
     private Paint mPaint;
@@ -23,6 +21,7 @@ public class Sprite extends BaseSprite implements View.OnClickListener, View.OnL
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setColor(Color.WHITE);
+        mPaint.setTextSize(18);
         mPaint.setStrokeWidth(2);
         mPaint.setStyle(Paint.Style.STROKE);
 
@@ -37,7 +36,6 @@ public class Sprite extends BaseSprite implements View.OnClickListener, View.OnL
 
         setOnClickListener(this);
         setOnLongClickListener(this);
-        mType = new Random().nextInt(10) + 1;
     }
 
     public void setEventListener(EventListener eventListener) {
@@ -96,6 +94,7 @@ public class Sprite extends BaseSprite implements View.OnClickListener, View.OnL
         } else if (mType == SpriteType.SQUARE) {
             canvas.drawRect(0, 0, width, height, mPaint);
         }
+        //canvas.drawText(mX + " " + mY, 10, 10, mPaint);
     }
 
     public interface EventListener {

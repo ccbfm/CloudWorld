@@ -10,8 +10,8 @@ import com.ccbfm.cloud.world.model.SpriteType;
 import com.ccbfm.cloud.world.model.StatusModel;
 
 public class InitialLoad extends LoadModel {
-    private static final int COLUMN = 16;
-    private static final int ROW = 18;
+    private static final int COLUMN = 36;
+    private static final int ROW = 10;//18;
 
     @Override
     protected void loadScenes(ScenesModel mapModel) {
@@ -19,8 +19,14 @@ public class InitialLoad extends LoadModel {
         int endR = ROW - 1;
         int endC = COLUMN - 1;
         for (int i = 0; i < COLUMN; i++) {
-            map[0][i] = SpriteType.SQUARE;
-            map[endR][i] = SpriteType.SQUARE;
+            if (i % 2 == 0) {
+                map[0][i] = SpriteType.SQUARE;
+                map[endR][i] = SpriteType.SQUARE;
+            } else {
+                int ii = i % 16;
+                map[0][i] =  ii;
+                map[endR][i] = ii;
+            }
         }
         for (int i = 0; i < ROW; i++) {
             map[i][0] = SpriteType.SQUARE;
@@ -51,7 +57,7 @@ public class InitialLoad extends LoadModel {
 
     @Override
     protected Point initPoint() {
-        return new Point(0,0);
+        return new Point(8,0);
     }
 
 }
