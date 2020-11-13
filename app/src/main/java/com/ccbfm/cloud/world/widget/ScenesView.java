@@ -4,11 +4,18 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.widget.FrameLayout;
 
 import com.ccbfm.cloud.world.model.ScenesModel;
 import com.ccbfm.cloud.world.model.SpriteType;
 import com.ccbfm.cloud.world.util.LogUtils;
+
+import java.lang.ref.WeakReference;
+import java.util.LinkedList;
 
 public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventListener {
     private int mGridX, mGridY, mRow, mColumn;
@@ -17,11 +24,19 @@ public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventLis
     private Sprite[][] mSprites;
     private boolean mIsHelpLine = false;
     private int[][] mScenesMap;
-    private int mOX, mOY;
+    private int mCX, mCY, mOX, mOY;
+
+    private boolean mIsMove = false;
+    private LinkedList<Point> mMoveTrack;
+    private ScenesHandler mHandler;
 
     public ScenesView(Context context, int width, int height) {
         super(context, width, height);
         setBackgroundColor(Color.rgb(119, 136, 153));
+
+        mHandler = new ScenesHandler(Looper.getMainLooper(), this);
+        mMoveTrack = new LinkedList<>();
+
         mColumn = 16;
         mGridY = mGridX = width / mColumn;
         mPaddingX = (width % mGridX) / 2.0f;
@@ -60,7 +75,13 @@ public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventLis
         mScenesMap = map;
         int ix = model.initX;
         int iy = model.initY;
-        handleUpdate(map, ix, iy, true);
+        handleUpdateResult(map, ix, iy, true);
+    }
+
+    private void handleUpdateResult(int[][] map, int cx, int cy, boolean init) {
+        if (handleUpdate(map, cx, cy, init)) {
+
+        }
     }
 
     private boolean handleUpdate(int[][] map, int cx, int cy, boolean init) {
@@ -140,6 +161,7 @@ public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventLis
             //LogUtils.w("wds", "ox=ffff" + cy + "," +oy+ ","+my);
             return false;
         }
+
         //LogUtils.w("wds", "ox=" + ox + "," + oy + "," + cx + "," + cy);
         for (int i = 0; i < row; i++) {
             int ty = i - oy;
@@ -147,7 +169,7 @@ public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventLis
                 int tx = j - ox;
                 if (tx >= 0 && tx < mx && ty >= 0 && ty < my) {
                     if (j == cx && i == cy) {
-                        mSprites[i][j].updateView(j, i, SpriteType.CIRCLE);
+                        mSprites[i][j].updateView(j, i, SpriteType.HUMANITY);
                     } else {
                         mSprites[i][j].updateView(j, i, map[ty][tx]);
                     }
@@ -156,18 +178,87 @@ public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventLis
                 }
             }
         }
+        mCX = cx;
+        mCY = cy;
         return true;
     }
 
     @Override
     public void onClick(int x, int y) {
-        LogUtils.w("ScenesView", "onClick-[" + x + "," + y + "]");
+        LogUtils.w("ScenesView", "onClick-[" + x + "," + y + "]  mIsMove=" + mIsMove);
         if (mScenesMap == null) {
             return;
         }
-        if (handleUpdate(mScenesMap, x, y, false)) {
 
+        if (!checkMove(mScenesMap, x, y, mOX, mOY)) {
+            return;
         }
+
+        if (!mIsMove && handleMoveTrack(mMoveTrack, mScenesMap, mCX, mCY, x, y, mOX, mOY)) {
+            move();
+        }
+        //LogUtils.w("wds", "mMoveTrack=" + mMoveTrack);
+    }
+
+    private boolean checkMove(int[][] map, int x, int y, int ox, int oy) {
+        int zx = x - ox;
+        int zy = y - oy;
+        return checkMove(map, zx, zy);
+    }
+
+    private boolean checkMove(int[][] map, int x, int y) {
+        return map[y][x] % 2 == 0;
+    }
+
+    private boolean handleMoveTrack(LinkedList<Point> track, int[][] map, int cx, int cy,
+                                    int mx, int my, int ox, int oy) {
+        if (cx == mx && cy == my) {
+            return false;
+        }
+
+        track.clear();
+
+        return calculateMoveTrack(track, map, cx, cy, mx, my, ox, oy);
+    }
+
+    private boolean calculateMoveTrack(LinkedList<Point> track, int[][] map, int cx, int cy,
+                                       int mx, int my, int ox, int oy) {
+        if (cx == mx && cy == my) {
+            return true;
+        }
+        int ofx = mx - cx;
+        int tx = cx;
+        if (ofx > 0) {
+            tx = cx + 1;
+        } else if (ofx < 0) {
+            tx = cx - 1;
+        }
+        if (tx != cx) {
+            int xx = tx - ox;
+            int xy = cy - oy;
+            if (checkMove(map, xx, xy)) {
+                track.add(new Point(xx, xy));
+                return calculateMoveTrack(track, map, tx, cy, mx, my, ox, oy);
+            }
+        }
+
+        int ofy = my - cy;
+        int ty = cy;
+        if (ofy > 0) {
+            ty = cy + 1;
+        } else if (ofy < 0) {
+            ty = cy - 1;
+        }
+
+        if (ty != cy) {
+            int xx = cx - ox;
+            int xy = ty - oy;
+            if (checkMove(map, xx, xy)) {
+                track.add(new Point(xx, xy));
+                return calculateMoveTrack(track, map, cx, ty, mx, my, ox, oy);
+            }
+        }
+        return false;
     }
 
     @Override
@@ -201,5 +292,37 @@ public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventLis
         }
     }
 
+    private static final int MOVE = 1;
 
+    private static final int MOVE_SPEED = 200;
+
+    private static class ScenesHandler extends Handler {
+
+        private WeakReference<ScenesView> mScenesView;
+
+        private ScenesHandler(Looper looper, ScenesView scenesView) {
+            super(looper);
+            mScenesView = new WeakReference<>(scenesView);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == MOVE) {
+                if (mScenesView.get() != null) {
+                    mScenesView.get().move();
+                }
+            }
+        }
+    }
+
+    private void move() {
+        if (mMoveTrack.size() > 0) {
+            mIsMove = true;
+            Point p = mMoveTrack.removeFirst();
+            handleUpdateResult(mScenesMap, p.x + mOX, p.y + mOY, false);
+            mHandler.sendEmptyMessageDelayed(MOVE, MOVE_SPEED);
+        } else {
+            mIsMove = false;
+        }
+    }
 }

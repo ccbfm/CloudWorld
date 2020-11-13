@@ -7,11 +7,12 @@ import com.ccbfm.cloud.world.model.LoadModel;
 import com.ccbfm.cloud.world.model.MenuModel;
 import com.ccbfm.cloud.world.model.ScenesModel;
 import com.ccbfm.cloud.world.model.SpriteType;
+import com.ccbfm.cloud.world.model.SpriteUtils;
 import com.ccbfm.cloud.world.model.StatusModel;
 
 public class InitialLoad extends LoadModel {
-    private static final int COLUMN = 36;
-    private static final int ROW = 10;//18;
+    private static final int COLUMN = 30;
+    private static final int ROW = 30;
 
     @Override
     protected void loadScenes(ScenesModel mapModel) {
@@ -19,19 +20,21 @@ public class InitialLoad extends LoadModel {
         int endR = ROW - 1;
         int endC = COLUMN - 1;
         for (int i = 0; i < COLUMN; i++) {
-            if (i % 2 == 0) {
-                map[0][i] = SpriteType.SQUARE;
-                map[endR][i] = SpriteType.SQUARE;
-            } else {
-                int ii = i % 16;
-                map[0][i] =  ii;
-                map[endR][i] = ii;
-            }
+            map[0][i] = SpriteType.TREE;
+            map[endR][i] = SpriteType.TREE;
         }
         for (int i = 0; i < ROW; i++) {
-            map[i][0] = SpriteType.SQUARE;
-            map[i][endC] = SpriteType.SQUARE;
+            map[i][0] = SpriteType.TREE;
+            map[i][endC] = SpriteType.TREE;
         }
+
+        SpriteUtils.buildColumn(map, 8, 1, 3, SpriteType.TREE);
+        SpriteUtils.buildColumn(map, 8, 5, 8, SpriteType.TREE);
+        SpriteUtils.buildRow(map, 1, 7, 8, SpriteType.TREE);
+
+        SpriteUtils.buildHouse(map, 2, 2, 4, 3);
+        map[5][4] = SpriteType.DOOR_NORMAL_B;
+
         mapModel.map = map;
     }
 
@@ -57,7 +60,7 @@ public class InitialLoad extends LoadModel {
 
     @Override
     protected Point initPoint() {
-        return new Point(33,9);
+        return new Point(5, 1);
     }
 
 }
