@@ -1,11 +1,9 @@
-package com.ccbfm.cloud.world.widget;
+package com.ccbfm.cloud.world.view;
 
 import android.content.Context;
 import android.widget.FrameLayout;
 
-import com.ccbfm.cloud.world.model.Model;
-
-public abstract class BaseView<M extends Model> extends FrameLayout {
+public abstract class BaseView<M> extends FrameLayout {
     protected int mWidth, mHeight;
 
     public BaseView(Context context, int width, int height) {

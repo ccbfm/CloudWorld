@@ -1,4 +1,4 @@
-package com.ccbfm.cloud.world.widget;
+package com.ccbfm.cloud.world.view;
 
 import android.content.Context;
 import android.graphics.Canvas;

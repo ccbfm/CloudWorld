@@ -1,4 +1,4 @@
-package com.ccbfm.cloud.world.widget;
+package com.ccbfm.cloud.world.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -29,6 +29,7 @@ public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventLis
     private boolean mIsMove = false;
     private LinkedList<Point> mMoveTrack;
     private ScenesHandler mHandler;
+    private ScenesChangeListener mChangeListener;
 
     public ScenesView(Context context, int width, int height) {
         super(context, width, height);
@@ -66,6 +67,10 @@ public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventLis
         }
     }
 
+    public void setChangeListener(ScenesChangeListener changeListener) {
+        mChangeListener = changeListener;
+    }
+
     @Override
     public void updateView(ScenesModel model) {
         int[][] map = model.map;
@@ -80,7 +85,9 @@ public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventLis
 
     private void handleUpdateResult(int[][] map, int cx, int cy, boolean init) {
         if (handleUpdate(map, cx, cy, init)) {
-
+            if(mChangeListener != null){
+                mChangeListener.change(cx, cy);
+            }
         }
     }
 

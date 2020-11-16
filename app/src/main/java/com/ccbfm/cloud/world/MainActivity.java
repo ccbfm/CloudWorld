@@ -1,18 +1,14 @@
 package com.ccbfm.cloud.world;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 
-import com.ccbfm.cloud.world.model.GameModel;
-import com.ccbfm.cloud.world.model.LoadModel;
-import com.ccbfm.cloud.world.model.ScenesModel;
-import com.ccbfm.cloud.world.model.initial.InitialLoad;
-import com.ccbfm.cloud.world.widget.GameView;
+import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.HashMap;
+import com.ccbfm.cloud.world.load.initial.InitialGame;
+import com.ccbfm.cloud.world.model.GameModel;
+import com.ccbfm.cloud.world.view.GameView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,11 +24,9 @@ public class MainActivity extends AppCompatActivity {
         gameView.setBackgroundColor(Color.rgb(119, 136, 153));
         setContentView(gameView);
 
-        HashMap<String, GameModel> maps = new HashMap<>();
-        LoadModel loadModel = new InitialLoad();
-        loadModel.load(maps);
-
-        gameView.updateView(maps.get("initial_map"));
+        InitialGame initialGame = new InitialGame();
+        GameModel gameModel = initialGame.load();
+        gameView.updateView(gameModel);
     }
 
 }

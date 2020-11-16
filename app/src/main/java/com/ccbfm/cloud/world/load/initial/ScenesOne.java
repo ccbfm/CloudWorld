@@ -1,21 +1,19 @@
-package com.ccbfm.cloud.world.model.initial;
+package com.ccbfm.cloud.world.load.initial;
 
 import android.graphics.Point;
 
-import com.ccbfm.cloud.world.model.ActiveModel;
-import com.ccbfm.cloud.world.model.LoadModel;
-import com.ccbfm.cloud.world.model.MenuModel;
+import com.ccbfm.cloud.world.load.LoadModel;
 import com.ccbfm.cloud.world.model.ScenesModel;
 import com.ccbfm.cloud.world.model.SpriteType;
 import com.ccbfm.cloud.world.model.SpriteUtils;
-import com.ccbfm.cloud.world.model.StatusModel;
 
-public class InitialLoad extends LoadModel {
+
+public class ScenesOne extends LoadModel {
     private static final int COLUMN = 30;
     private static final int ROW = 30;
 
     @Override
-    protected void loadScenes(ScenesModel mapModel) {
+    protected void loadScenes(ScenesModel scenesModel) {
         int[][] map = new int[ROW][COLUMN];
         int endR = ROW - 1;
         int endC = COLUMN - 1;
@@ -35,32 +33,26 @@ public class InitialLoad extends LoadModel {
         SpriteUtils.buildHouse(map, 2, 2, 4, 3);
         map[5][4] = SpriteType.DOOR_NORMAL_B;
 
-        mapModel.map = map;
+        scenesModel.map = map;
     }
 
     @Override
-    protected ActiveModel loadActive() {
-        return null;
-    }
+    protected void loadActive(ScenesModel scenesModel) {
 
-    @Override
-    protected StatusModel loadStatus() {
-        return null;
-    }
-
-    @Override
-    protected MenuModel loadMenu() {
-        return null;
     }
 
     @Override
     protected String createKey() {
-        return "initial_map";
+        return "scenes_one";
+    }
+
+    @Override
+    protected String modelName() {
+        return "";
     }
 
     @Override
     protected Point initPoint() {
         return new Point(5, 1);
     }
-
 }

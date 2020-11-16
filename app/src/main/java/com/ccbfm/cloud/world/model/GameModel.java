@@ -1,13 +1,21 @@
 package com.ccbfm.cloud.world.model;
 
-public class GameModel extends Model{
+import android.text.TextUtils;
 
-    public String key;
-    private boolean isStatus, isScenes, isActive, isMenu;
+import java.util.HashMap;
+
+public class GameModel extends Model {
+
+    private String key;
+    private boolean isStatus, isScenes, isMenu;
     private StatusModel statusModel;
-    private ScenesModel scenesModel;
-    private ActiveModel activeModel;
+    private String scenesKey;
+    private HashMap<String, ScenesModel> scenesModel;
     private MenuModel menuModel;
+
+    public GameModel() {
+        scenesModel = new HashMap<>();
+    }
 
     public StatusModel getStatusModel() {
         isStatus = false;
@@ -15,7 +23,7 @@ public class GameModel extends Model{
     }
 
     public void setStatusModel(StatusModel statusModel) {
-        if(statusModel != null) {
+        if (statusModel != null) {
             isStatus = true;
         }
         this.statusModel = statusModel;
@@ -23,26 +31,11 @@ public class GameModel extends Model{
 
     public ScenesModel getScenesModel() {
         isScenes = false;
-        return scenesModel;
+        return scenesModel.get(scenesKey);
     }
 
-    public void setScenesModel(ScenesModel scenesModel) {
-        if(scenesModel != null) {
-            isScenes = true;
-        }
-        this.scenesModel = scenesModel;
-    }
-
-    public ActiveModel getActiveModel() {
-        isActive = false;
-        return activeModel;
-    }
-
-    public void setActiveModel(ActiveModel activeModel) {
-        if(activeModel != null) {
-            isActive = true;
-        }
-        this.activeModel = activeModel;
+    public void putScenesModel(String scenesKey, ScenesModel scenesModel) {
+        this.scenesModel.put(scenesKey, scenesModel);
     }
 
     public MenuModel getMenuModel() {
@@ -51,10 +44,21 @@ public class GameModel extends Model{
     }
 
     public void setMenuModel(MenuModel menuModel) {
-        if(menuModel != null) {
+        if (menuModel != null) {
             isMenu = true;
         }
         this.menuModel = menuModel;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public void setScenesKey(String scenesKey) {
+        if(!TextUtils.equals(scenesKey, this.scenesKey)){
+            this.isScenes = true;
+        }
+        this.scenesKey = scenesKey;
     }
 
     public boolean isStatus() {
@@ -63,10 +67,6 @@ public class GameModel extends Model{
 
     public boolean isScenes() {
         return isScenes;
-    }
-
-    public boolean isActive() {
-        return isActive;
     }
 
     public boolean isMenu() {

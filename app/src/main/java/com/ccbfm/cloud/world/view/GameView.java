@@ -1,9 +1,10 @@
-package com.ccbfm.cloud.world.widget;
+package com.ccbfm.cloud.world.view;
 
 import android.content.Context;
 import android.widget.FrameLayout;
 
 import com.ccbfm.cloud.world.model.GameModel;
+import com.ccbfm.cloud.world.model.ScenesModel;
 import com.ccbfm.cloud.world.util.CheckUtils;
 
 
@@ -36,6 +37,8 @@ public class GameView extends BaseView<GameModel> {
         addView(activeView, activeLp);
         mActiveView = activeView;
 
+        scenesView.setChangeListener(activeView);
+
         int menuH = h3 - h4;
         MenuView menuView = new MenuView(context, width, menuH);
         FrameLayout.LayoutParams menuLp = new LayoutParams(width, menuH);
@@ -52,11 +55,13 @@ public class GameView extends BaseView<GameModel> {
             mStatusView.updateView(model.getStatusModel());
         }
         if (mScenesView != null && model.isScenes()) {
-            mScenesView.updateView(model.getScenesModel());
+            ScenesModel so = model.getScenesModel();
+            mScenesView.updateView(so);
+            if (mActiveView != null) {
+                mActiveView.updateView(so.getActiveModels(so.initX, so.initY));
+            }
         }
-        if (mActiveView != null && model.isActive()) {
-            mActiveView.updateView(model.getActiveModel());
-        }
+
         if (mMenuView != null && model.isMenu()) {
             mMenuView.updateView(model.getMenuModel());
         }
