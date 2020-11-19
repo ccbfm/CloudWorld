@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
         int height = metrics.heightPixels;
 
         GameView gameView = new GameView(this, width, height);
-        gameView.setBackgroundColor(Color.rgb(119, 136, 153));
         setContentView(gameView);
 
         InitialGame initialGame = new InitialGame();

@@ -24,8 +24,6 @@ public class BorderView extends BaseSprite {
 
     public BorderView(Context context, int width, int height) {
         super(context, width, height);
-        mBorderRectF = new RectF(0, 0, width, height);
-
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setColor(Color.WHITE);
         mPaint.setStrokeWidth(2);
@@ -39,7 +37,9 @@ public class BorderView extends BaseSprite {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        RectF rectF = mBorderRectF;
-        canvas.drawRoundRect(rectF, rectF.left, rectF.top, mPaint);
+        if(mBorderRectF != null) {
+            RectF rectF = mBorderRectF;
+            canvas.drawRoundRect(rectF, rectF.left, rectF.top, mPaint);
+        }
     }
 }

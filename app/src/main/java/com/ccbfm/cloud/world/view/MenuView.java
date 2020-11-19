@@ -11,7 +11,7 @@ public class MenuView extends BaseView<MenuModel> {
 
     public MenuView(Context context, int width, int height) {
         super(context, width, height);
-
+        setBackgroundColor();
         int mW = width / MENU_NAME.length;
         for (int i = 0; i < MENU_NAME.length; i++) {
             FrameLayout.LayoutParams lp = new LayoutParams(mW, height);

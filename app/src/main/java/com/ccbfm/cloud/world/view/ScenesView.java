@@ -20,7 +20,6 @@ import java.util.LinkedList;
 public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventListener {
     private int mGridX, mGridY, mRow, mColumn;
     private float mPaddingX, mPaddingY;
-    private Paint mPaint;
     private Sprite[][] mSprites;
     private boolean mIsHelpLine = false;
     private int[][] mScenesMap;
@@ -33,7 +32,7 @@ public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventLis
 
     public ScenesView(Context context, int width, int height) {
         super(context, width, height);
-        setBackgroundColor(Color.rgb(119, 136, 153));
+        setBackgroundColor();
 
         mHandler = new ScenesHandler(Looper.getMainLooper(), this);
         mMoveTrack = new LinkedList<>();
@@ -45,10 +44,7 @@ public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventLis
         mPaddingY = (height % mGridY) / 2.0f;
         LogUtils.w("ScenesView", "mGridY=" + mGridY + "," + mColumn + "," + mRow);
 
-        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaint.setColor(Color.WHITE);
-        mPaint.setStrokeWidth(2);
-        mPaint.setStyle(Paint.Style.FILL);
+
 
         mSprites = new Sprite[mRow][mColumn];
         for (int i = 0; i < mRow; i++) {

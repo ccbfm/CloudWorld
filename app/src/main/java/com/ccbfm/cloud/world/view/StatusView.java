@@ -8,8 +8,7 @@ public class StatusView extends BaseView<StatusModel> {
 
     public StatusView(Context context, int width, int height) {
         super(context, width, height);
-
-        addView(BorderView.create(context, width, height));
+        setBorder(-1);
     }
 
     @Override

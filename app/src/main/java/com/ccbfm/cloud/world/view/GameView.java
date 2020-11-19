@@ -56,10 +56,10 @@ public class GameView extends BaseView<GameModel> {
         }
         if (mScenesView != null && model.isScenes()) {
             ScenesModel so = model.getScenesModel();
-            mScenesView.updateView(so);
             if (mActiveView != null) {
-                mActiveView.updateView(so.getActiveModels(so.initX, so.initY));
+                mActiveView.updateView(so);
             }
+            mScenesView.updateView(so);
         }
 
         if (mMenuView != null && model.isMenu()) {

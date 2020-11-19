@@ -11,7 +11,6 @@ import com.ccbfm.cloud.world.model.SpriteType;
 
 public class Sprite extends BaseSprite implements View.OnClickListener, View.OnLongClickListener {
 
-    private Paint mPaint;
     private float mCX, mCY, mR;
     private float mLX, mRX, mTY, mBY;
     private int mX, mY, mType = SpriteType.NONE;
@@ -21,12 +20,6 @@ public class Sprite extends BaseSprite implements View.OnClickListener, View.OnL
 
     public Sprite(Context context, int width, int height) {
         super(context, width, height);
-
-        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaint.setColor(Color.WHITE);
-        mPaint.setTextSize(18);
-        mPaint.setStrokeWidth(2);
-        mPaint.setStyle(Paint.Style.STROKE);
 
         mCX = width / 2.0f;
         mCY = mHeight / 2.0f;

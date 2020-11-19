@@ -3,27 +3,25 @@ package com.ccbfm.cloud.world.load.initial;
 import android.graphics.Point;
 
 import com.ccbfm.cloud.world.load.LoadModel;
+import com.ccbfm.cloud.world.model.ActiveModel;
 import com.ccbfm.cloud.world.model.ScenesModel;
 import com.ccbfm.cloud.world.model.SpriteType;
 import com.ccbfm.cloud.world.model.SpriteUtils;
 
 
 public class ScenesOne extends LoadModel {
-    private static final int COLUMN = 30;
-    private static final int ROW = 30;
 
     @Override
-    protected void loadScenes(ScenesModel scenesModel) {
-        int[][] map = new int[ROW][COLUMN];
-        int endR = ROW - 1;
-        int endC = COLUMN - 1;
-        for (int i = 0; i < COLUMN; i++) {
+    protected void loadMap(int[][] map, int maxX, int maxY) {
+        int endY = maxY - 1;
+        int endX = maxX - 1;
+        for (int i = 0; i < maxX; i++) {
             map[0][i] = SpriteType.TREE;
-            map[endR][i] = SpriteType.TREE;
+            map[endY][i] = SpriteType.TREE;
         }
-        for (int i = 0; i < ROW; i++) {
+        for (int i = 0; i < maxY; i++) {
             map[i][0] = SpriteType.TREE;
-            map[i][endC] = SpriteType.TREE;
+            map[i][endX] = SpriteType.TREE;
         }
 
         SpriteUtils.buildColumn(map, 8, 1, 3, SpriteType.TREE);
@@ -33,11 +31,13 @@ public class ScenesOne extends LoadModel {
         SpriteUtils.buildHouse(map, 2, 2, 4, 3);
         map[5][4] = SpriteType.DOOR_NORMAL_B;
 
-        scenesModel.map = map;
+
     }
 
     @Override
     protected void loadActive(ScenesModel scenesModel) {
+        ActiveModel door1 = new ActiveModel("木门");
+        scenesModel.addActive(4, 5, door1);
 
     }
 
@@ -49,6 +49,12 @@ public class ScenesOne extends LoadModel {
     @Override
     protected String modelName() {
         return "";
+    }
+
+
+    @Override
+    protected Point maxPoint() {
+        return new Point(30, 30);
     }
 
     @Override
