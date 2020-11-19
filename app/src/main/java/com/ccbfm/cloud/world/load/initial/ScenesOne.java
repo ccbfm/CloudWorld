@@ -24,21 +24,45 @@ public class ScenesOne extends LoadModel {
             map[i][endX] = SpriteType.TREE;
         }
 
-        SpriteUtils.buildColumn(map, 8, 1, 3, SpriteType.TREE);
-        SpriteUtils.buildColumn(map, 8, 5, 8, SpriteType.TREE);
-        SpriteUtils.buildRow(map, 1, 7, 8, SpriteType.TREE);
+        SpriteUtils.buildColumn(map, 8, 1, 2, SpriteType.TREE);
+        SpriteUtils.buildColumn(map, 8, 5, 7, SpriteType.TREE);
+        SpriteUtils.buildRow(map, 1, 7, 7, SpriteType.TREE);
 
         SpriteUtils.buildHouse(map, 2, 2, 4, 3);
         map[5][4] = SpriteType.DOOR_NORMAL_B;
 
+        SpriteUtils.buildColumn(map, 10, 1, 7, SpriteType.TREE);
+        SpriteUtils.buildColumn(map, 20, 1, 7, SpriteType.TREE);
+        SpriteUtils.buildRow(map, 10, 7, 14, SpriteType.TREE);
+        SpriteUtils.buildRow(map, 16, 7, 19, SpriteType.TREE);
 
+        SpriteUtils.buildHouse(map, 11, 1, 8, 5);
+        map[6][15] = SpriteType.DOOR_NORMAL_B;
+
+        SpriteUtils.buildColumn(map, 21, 1, 7, SpriteType.TREE);
+
+        SpriteUtils.buildHouse(map, 22, 1, 2, 2);
+        map[3][23] = SpriteType.DOOR_NORMAL_B;
+
+        SpriteUtils.buildHouse(map, 26, 1, 2, 2);
+        map[3][27] = SpriteType.DOOR_NORMAL_B;
+
+        SpriteUtils.buildHouse(map, 22, 5, 2, 2);
+        map[7][23] = SpriteType.DOOR_NORMAL_B;
+
+        SpriteUtils.buildHouse(map, 26, 5, 2, 2);
+        map[7][27] = SpriteType.DOOR_NORMAL_B;
+
+        SpriteUtils.buildColumn(map, 21, 9, 15, SpriteType.TREE);
+        SpriteUtils.buildRow(map, 21, 16, 28, SpriteType.TREE);
     }
 
     @Override
     protected void loadActive(ScenesModel scenesModel) {
         ActiveModel door1 = new ActiveModel("木门");
         scenesModel.addActive(4, 5, door1);
-
+        ActiveModel door2 = new ActiveModel("铁门");
+        scenesModel.addActive(15, 6, door2);
     }
 
     @Override
@@ -59,6 +83,6 @@ public class ScenesOne extends LoadModel {
 
     @Override
     protected Point initPoint() {
-        return new Point(5, 1);
+        return new Point(15, 12);
     }
 }

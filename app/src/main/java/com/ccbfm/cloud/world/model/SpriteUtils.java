@@ -25,14 +25,20 @@ public class SpriteUtils {
         }
     }
 
-    public static void buildRow(int[][] map, int x, int y, int ox, int type){
-        for (int i = x; i < ox; i++) {
+    /**
+     * 行
+     */
+    public static void buildRow(int[][] map, int x, int y, int ex, int type){
+        for (int i = x; i <= ex; i++) {
             map[y][i] = type;
         }
     }
 
-    public static void buildColumn(int[][] map, int x, int y, int oy, int type){
-        for (int i = y; i < oy; i++) {
+    /**
+     * 列
+     */
+    public static void buildColumn(int[][] map, int x, int y, int ey, int type){
+        for (int i = y; i <= ey; i++) {
             map[i][x] = type;
         }
     }

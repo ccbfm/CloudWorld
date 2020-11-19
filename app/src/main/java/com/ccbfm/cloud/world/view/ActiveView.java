@@ -2,7 +2,6 @@ package com.ccbfm.cloud.world.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.text.TextUtils;
@@ -52,8 +51,8 @@ public class ActiveView extends BaseView<ScenesModel> implements ScenesChangeLis
 
     @Override
     public void change(int x, int y) {
+        LogUtils.w("wds", "change-x=" + x + ",y=" + y);
         LinkedList<ActiveModel> activeModels = mScenesModel.getActiveModels(x, y);
-
         mAdapter.setActiveModels(activeModels);
     }
 
@@ -157,7 +156,7 @@ public class ActiveView extends BaseView<ScenesModel> implements ScenesChangeLis
                     mPaint.setStyle(Paint.Style.STROKE);
                     canvas.drawPath(mPath, mPaint);
                 }
-                if(!TextUtils.isEmpty(mModel.name)) {
+                if (!TextUtils.isEmpty(mModel.name)) {
                     mPaint.setStyle(Paint.Style.FILL);
                     Paint.FontMetrics metrics = mPaint.getFontMetrics();
                     float distance = (metrics.bottom - metrics.top) / 2 - metrics.bottom;

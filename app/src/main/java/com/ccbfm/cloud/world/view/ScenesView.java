@@ -82,7 +82,7 @@ public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventLis
     private void handleUpdateResult(int[][] map, int cx, int cy, boolean init) {
         if (handleUpdate(map, cx, cy, init)) {
             if(mChangeListener != null){
-                mChangeListener.change(cx, cy);
+                mChangeListener.change(cx - mOX, cy - mOY);
             }
         }
     }
