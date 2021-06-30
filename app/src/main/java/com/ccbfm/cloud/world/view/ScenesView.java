@@ -2,14 +2,13 @@ package com.ccbfm.cloud.world.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.widget.FrameLayout;
 
+import com.ccbfm.cloud.world.Config;
 import com.ccbfm.cloud.world.model.ScenesModel;
 import com.ccbfm.cloud.world.model.SpriteType;
 import com.ccbfm.cloud.world.util.LogUtils;
@@ -18,16 +17,16 @@ import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 
 public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventListener {
-    private int mGridX, mGridY, mRow, mColumn;
-    private float mPaddingX, mPaddingY;
-    private Sprite[][] mSprites;
-    private boolean mIsHelpLine = false;
+    private final int mGridX, mGridY, mRow, mColumn;
+    private final float mPaddingX, mPaddingY;
+    private final Sprite[][] mSprites;
+    private static final boolean IS_HELP_LINE = false;
     private int[][] mScenesMap;
     private int mCX, mCY, mOX, mOY;
 
     private boolean mIsMove = false;
-    private LinkedList<Point> mMoveTrack;
-    private ScenesHandler mHandler;
+    private final LinkedList<Point> mMoveTrack;
+    private final ScenesHandler mHandler;
     private ScenesChangeListener mChangeListener;
 
     public ScenesView(Context context, int width, int height) {
@@ -37,14 +36,12 @@ public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventLis
         mHandler = new ScenesHandler(Looper.getMainLooper(), this);
         mMoveTrack = new LinkedList<>();
 
-        mColumn = 16;
+        mColumn = Config.SCENE_COLUMN;
         mGridY = mGridX = width / mColumn;
         mPaddingX = (width % mGridX) / 2.0f;
         mRow = height / mGridY;
         mPaddingY = (height % mGridY) / 2.0f;
         LogUtils.w("ScenesView", "mGridY=" + mGridY + "," + mColumn + "," + mRow);
-
-
 
         mSprites = new Sprite[mRow][mColumn];
         for (int i = 0; i < mRow; i++) {
@@ -80,9 +77,15 @@ public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventLis
     }
 
     private void handleUpdateResult(int[][] map, int cx, int cy, boolean init) {
+        //LogUtils.w("wds", "handleUpdateResult-=" + cx + "," + cy);
         if (handleUpdate(map, cx, cy, init)) {
-            if(mChangeListener != null){
-                mChangeListener.change(cx - mOX, cy - mOY);
+            if (mChangeListener != null) {
+                if(init){
+                    mChangeListener.change(cx, cy);
+                } else {
+                    mChangeListener.change(cx - mOX, cy - mOY);
+                }
+                //LogUtils.w("wds", "handleUpdateResult-=" + mCX + "," + mCY + "," + mOX + "," + mOY);
             }
         }
     }
@@ -124,10 +127,12 @@ public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventLis
                 //LogUtils.w("wds", "cx=" + cx);
                 ox = pmx;
             }
-            mOX = ox;
+
         } else {
             ox = 0;
         }
+
+        mOX = ox;
 
         if (my < row) {
             oy = (row - my) >> 1;
@@ -154,10 +159,11 @@ public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventLis
                 cy = cy + (pmy - oy);
                 oy = pmy;
             }
-            mOY = oy;
         } else {
             oy = 0;
         }
+
+        mOY = oy;
 
         if (cx < ox || cx >= ox + mx || cy < oy || cy >= oy + my) {
             //LogUtils.w("wds", "ox=ffff" + (cx < ox) + "," + (cx >= ox + mx));
@@ -204,12 +210,18 @@ public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventLis
     }
 
     private boolean checkMove(int[][] map, int x, int y, int ox, int oy) {
+        LogUtils.w("wds", "checkMove:" + x + "," + y + "," + ox + "," + oy);
         int zx = x - ox;
         int zy = y - oy;
         return checkMove(map, zx, zy);
     }
 
     private boolean checkMove(int[][] map, int x, int y) {
+        int mx = map[0].length;
+        int my = map.length;
+        if (x < 0 || y < 0 || x >= mx || y >= my) {
+            return false;
+        }
         return map[y][x] % 2 == 0;
     }
 
@@ -274,24 +286,25 @@ public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventLis
         int column = mColumn;
         int row = mRow;
 
-        for (int i = 0, count = column + 1; i < count; i++) {
-            if ((i > 0 && i < column)) {
-                if (!mIsHelpLine) {
-                    continue;
-                }
-            }
-            float x = i * mGridX + sX;
-            canvas.drawLine(x, sY, x, eY, mPaint);
-        }
+        float x = sX;
+        canvas.drawLine(x, sY, x, eY, mPaint);
+        x = column * mGridX + sX;
+        canvas.drawLine(x, sY, x, eY, mPaint);
 
-        for (int i = 0, count = row + 1; i < count; i++) {
-            if ((i > 0 && i < row)) {
-                if (!mIsHelpLine) {
-                    continue;
-                }
+        float h = sY;
+        canvas.drawLine(sX, h, eX, h, mPaint);
+        h = row * mGridY + sY;
+        canvas.drawLine(sX, h, eX, h, mPaint);
+
+        if(IS_HELP_LINE){
+            for (int i = 1; i < column; i++) {
+                x = i * mGridX + sX;
+                canvas.drawLine(x, sY, x, eY, mPaint);
             }
-            float h = i * mGridY + sY;
-            canvas.drawLine(sX, h, eX, h, mPaint);
+            for (int i = 1; i < row; i++) {
+                h = i * mGridY + sY;
+                canvas.drawLine(sX, h, eX, h, mPaint);
+            }
         }
     }
 
@@ -301,7 +314,7 @@ public class ScenesView extends BaseView<ScenesModel> implements Sprite.EventLis
 
     private static class ScenesHandler extends Handler {
 
-        private WeakReference<ScenesView> mScenesView;
+        private final WeakReference<ScenesView> mScenesView;
 
         private ScenesHandler(Looper looper, ScenesView scenesView) {
             super(looper);

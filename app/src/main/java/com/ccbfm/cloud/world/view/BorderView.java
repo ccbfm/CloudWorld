@@ -8,7 +8,7 @@ import android.graphics.RectF;
 
 public class BorderView extends BaseSprite {
     private RectF mBorderRectF;
-    private Paint mPaint;
+    private final Paint mPaint;
 
     public static BorderView create(Context context, int width, int height){
         float border;

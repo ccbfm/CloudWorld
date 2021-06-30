@@ -1,6 +1,7 @@
 package com.ccbfm.cloud.world.view;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.widget.FrameLayout;
 
 import com.ccbfm.cloud.world.model.MenuModel;
@@ -16,7 +17,10 @@ public class MenuView extends BaseView<MenuModel> {
         for (int i = 0; i < MENU_NAME.length; i++) {
             FrameLayout.LayoutParams lp = new LayoutParams(mW, height);
             lp.leftMargin = i * mW;
-            addView(BorderView.create(context, mW, height), lp);
+            BorderView bv = BorderView.create(context, mW, height);
+            bv.setGravity(Gravity.CENTER);
+            bv.setText(MENU_NAME[i]);
+            addView(bv, lp);
         }
     }
 

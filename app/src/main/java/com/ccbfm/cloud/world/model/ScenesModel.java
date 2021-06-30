@@ -11,7 +11,7 @@ public class ScenesModel extends Model {
     public int[][] map;
     public int initX;
     public int initY;
-    private HashMap<String, LinkedList<ActiveModel>> mActiveMap;
+    private final HashMap<String, LinkedList<ActiveModel>> mActiveMap;
 
     public ScenesModel() {
         mActiveMap = new HashMap<>();

@@ -58,8 +58,8 @@ public class ActiveView extends BaseView<ScenesModel> implements ScenesChangeLis
 
     private class RecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
         private LinkedList<ActiveModel> mActiveModels;
-        private Context mContext;
-        private int mWidth, mHeight;
+        private final Context mContext;
+        private final int mWidth, mHeight;
 
         public RecyclerAdapter(Context context, int width, int height) {
             mContext = context;
