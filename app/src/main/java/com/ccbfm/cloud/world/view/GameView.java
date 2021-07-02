@@ -10,9 +10,15 @@ import com.ccbfm.cloud.world.util.CheckUtils;
 
 public class GameView extends BaseView<GameModel> {
     private BaseView mStatusView, mScenesView, mActiveView, mMenuView;
-
+    private final int mWidth, mHeight;
     public GameView(Context context, int width, int height) {
         super(context, width, height);
+        mWidth = width;
+        mHeight = height;
+        initView(context, width, height);
+    }
+
+    private void initView(Context context, int width, int height){
         int h2 = height >> 2;
         int h3 = height >> 3;
         int h4 = height >> 4;
@@ -32,6 +38,7 @@ public class GameView extends BaseView<GameModel> {
 
         int activeH = h3 + h4;
         ActiveView activeView = new ActiveView(context, width, activeH);
+        activeView.setRootView(this);
         FrameLayout.LayoutParams activeLp = new LayoutParams(width, activeH);
         activeLp.topMargin = scenesH + statusH;
         addView(activeView, activeLp);
@@ -49,8 +56,14 @@ public class GameView extends BaseView<GameModel> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public void updateView(GameModel model) {
+    public void updateView(GameModel model, boolean flag) {
         CheckUtils.checkNotNull(model);
+
+        if(flag) {
+            removeAllViews();
+            initView(getContext(), mWidth, mHeight);
+        }
+
         if (mStatusView != null && model.isStatus()) {
             mStatusView.updateView(model.getStatusModel());
         }
@@ -62,8 +75,6 @@ public class GameView extends BaseView<GameModel> {
             mScenesView.updateView(so);
         }
 
-        if (mMenuView != null && model.isMenu()) {
-            mMenuView.updateView(model.getMenuModel());
-        }
     }
+
 }

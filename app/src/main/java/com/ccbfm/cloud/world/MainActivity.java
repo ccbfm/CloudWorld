@@ -8,9 +8,8 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ccbfm.cloud.world.load.initial.InitialGame;
+import com.ccbfm.cloud.world.load.initial.InitialWorld;
 import com.ccbfm.cloud.world.model.GameModel;
-import com.ccbfm.cloud.world.util.LogUtils;
 import com.ccbfm.cloud.world.view.GameView;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         GameView gameView = new GameView(this, width, height);
         setContentView(gameView);
 
-        InitialGame initialGame = new InitialGame();
+        InitialWorld initialGame = new InitialWorld();
         GameModel gameModel = initialGame.load();
         gameView.updateView(gameModel);
     }

@@ -47,7 +47,13 @@ public abstract class BaseView<M extends Model> extends FrameLayout {
         mPaint.setStyle(Paint.Style.STROKE);
     }
 
-    public abstract void updateView(M model);
+    public void updateView(M model, boolean flag){
+
+    }
+
+    public void updateView(M model){
+        updateView(model, false);
+    }
 
 
     @Override

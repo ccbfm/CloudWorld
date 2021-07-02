@@ -14,7 +14,10 @@ public interface SpriteType {
 
 
     int HAVE = 1;
-    int LINE_T = HAVE + SPAN;
+
+    int EMPTY = HAVE + SPAN;
+
+    int LINE_T = EMPTY + SPAN;
     int LINE_B = LINE_T + SPAN;
     int LINE_L = LINE_B + SPAN;
     int LINE_R = LINE_L + SPAN;
@@ -27,4 +30,6 @@ public interface SpriteType {
     int ARC_BL = ARC_TR + SPAN;
     int ARC_BR = ARC_BL + SPAN;
     int TREE = ARC_BR + SPAN;
+
+    int CIRCLE_H = TREE + SPAN;
 }

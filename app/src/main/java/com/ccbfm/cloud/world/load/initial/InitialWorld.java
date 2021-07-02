@@ -1,13 +1,13 @@
 package com.ccbfm.cloud.world.load.initial;
 
-import com.ccbfm.cloud.world.load.LoadGame;
+import com.ccbfm.cloud.world.load.LoadWorld;
 import com.ccbfm.cloud.world.load.LoadModel;
 import com.ccbfm.cloud.world.model.MenuModel;
 import com.ccbfm.cloud.world.model.StatusModel;
 
 import java.util.LinkedList;
 
-public class InitialGame extends LoadGame {
+public class InitialWorld extends LoadWorld {
 
     @Override
     protected void getLoadModelList(LinkedList<LoadModel> models) {
@@ -16,11 +16,6 @@ public class InitialGame extends LoadGame {
 
     @Override
     protected StatusModel loadStatus() {
-        return null;
-    }
-
-    @Override
-    protected MenuModel loadMenu() {
         return null;
     }
 

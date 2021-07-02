@@ -11,8 +11,8 @@ import com.ccbfm.cloud.world.model.SpriteType;
 
 public class Sprite extends BaseSprite implements View.OnClickListener, View.OnLongClickListener {
 
-    private float mCX, mCY, mR;
-    private float mLX, mRX, mTY, mBY;
+    private final float mCX, mCY, mR;
+    private final float mLX, mRX, mTY, mBY;
     private int mX, mY, mType = SpriteType.NONE;
     private EventListener mEventListener;
     private Path mPath;
@@ -23,7 +23,7 @@ public class Sprite extends BaseSprite implements View.OnClickListener, View.OnL
 
         mCX = width / 2.0f;
         mCY = mHeight / 2.0f;
-        mR = mCX;
+        mR = mCX - 1;
 
         mLX = width / 4.0f;
         mRX = width - mLX;
@@ -93,13 +93,17 @@ public class Sprite extends BaseSprite implements View.OnClickListener, View.OnL
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (mType == SpriteType.NONE) {
+        if (mType <= SpriteType.NONE) {
             return;
         }
         int width = mWidth;
         int height = mHeight;
         canvas.save();
-        if (mType == SpriteType.CIRCLE) {
+        if (mType == SpriteType.EMPTY){
+            canvas.drawLine(mLX, mTY, mRX, mBY, mPaint);
+            canvas.drawLine(mRX, mTY, mLX, mBY, mPaint);
+            canvas.drawRect(0, 0, width, height, mPaint);
+        } else if (mType == SpriteType.CIRCLE || mType == SpriteType.CIRCLE_H) {
             canvas.drawCircle(mCX, mCY, mR, mPaint);
         } else if (mType == SpriteType.LINE_L) {
             canvas.drawLine(mLX, 0, mLX, height, mPaint);

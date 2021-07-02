@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -22,7 +23,8 @@ import java.util.LinkedList;
 
 public class ActiveView extends BaseView<ScenesModel> implements ScenesChangeListener {
     private ScenesModel mScenesModel;
-    private RecyclerAdapter mAdapter;
+    private final RecyclerAdapter mAdapter;
+    private GameView mRootView;
 
     public ActiveView(Context context, int width, int height) {
         super(context, width, height);
@@ -42,6 +44,10 @@ public class ActiveView extends BaseView<ScenesModel> implements ScenesChangeLis
         lp.leftMargin = border;
         lp.rightMargin = border;
         addView(recyclerView, lp);
+    }
+
+    public void setRootView(GameView rootView) {
+        mRootView = rootView;
     }
 
     @Override
@@ -99,7 +105,7 @@ public class ActiveView extends BaseView<ScenesModel> implements ScenesChangeLis
         }
     }
 
-    private class ViewHolder extends RecyclerView.ViewHolder {
+    private static class ViewHolder extends RecyclerView.ViewHolder {
         ActiveItem activeItem;
 
         public ViewHolder(@NonNull ActiveItem itemView) {
@@ -111,7 +117,7 @@ public class ActiveView extends BaseView<ScenesModel> implements ScenesChangeLis
     private class ActiveItem extends BaseSprite {
 
         private ActiveModel mModel;
-        private float mCX, mCY, mX2, mX4, mX8;
+        private final float mCX, mCY, mX2, mX4, mX8;
         private Path mPath;
 
         public ActiveItem(Context context, int width, int height) {
@@ -127,6 +133,16 @@ public class ActiveView extends BaseView<ScenesModel> implements ScenesChangeLis
         public void setModel(ActiveModel model) {
             mModel = model;
             if (mModel != null) {
+
+                if(mRootView != null) {
+                    setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mModel.clickEvent(mRootView);
+                        }
+                    });
+                }
+
                 int type = mModel.type;
                 float x4 = mX4;
                 float x8 = mX8;

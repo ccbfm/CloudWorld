@@ -6,13 +6,12 @@ import com.ccbfm.cloud.world.model.StatusModel;
 
 import java.util.LinkedList;
 
-public abstract class LoadGame {
+public abstract class LoadWorld {
 
     public GameModel load(){
         GameModel gameModel = new GameModel();
         gameModel.setKey(createKey());
         gameModel.setStatusModel(loadStatus());
-        gameModel.setMenuModel(loadMenu());
         LinkedList<LoadModel> loadModels = new LinkedList<>();
         getLoadModelList(loadModels);
 
@@ -32,5 +31,4 @@ public abstract class LoadGame {
 
     protected abstract StatusModel loadStatus();
 
-    protected abstract MenuModel loadMenu();
 }

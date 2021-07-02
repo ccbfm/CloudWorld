@@ -11,7 +11,6 @@ public class GameModel extends Model {
     private StatusModel statusModel;
     private String scenesKey;
     private HashMap<String, ScenesModel> scenesModel;
-    private MenuModel menuModel;
 
     public GameModel() {
         scenesModel = new HashMap<>();
@@ -36,18 +35,6 @@ public class GameModel extends Model {
 
     public void putScenesModel(String scenesKey, ScenesModel scenesModel) {
         this.scenesModel.put(scenesKey, scenesModel);
-    }
-
-    public MenuModel getMenuModel() {
-        isMenu = false;
-        return menuModel;
-    }
-
-    public void setMenuModel(MenuModel menuModel) {
-        if (menuModel != null) {
-            isMenu = true;
-        }
-        this.menuModel = menuModel;
     }
 
     public void setKey(String key) {

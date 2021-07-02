@@ -16,12 +16,12 @@ public class ScenesOne extends LoadModel {
         int endY = maxY - 1;
         int endX = maxX - 1;
         for (int i = 0; i < maxX; i++) {
-            map[0][i] = SpriteType.TREE;
-            map[endY][i] = SpriteType.TREE;
+            map[0][i] = SpriteType.EMPTY;
+            map[endY][i] = SpriteType.EMPTY;
         }
         for (int i = 0; i < maxY; i++) {
-            map[i][0] = SpriteType.TREE;
-            map[i][endX] = SpriteType.TREE;
+            map[i][0] = SpriteType.EMPTY;
+            map[i][endX] = SpriteType.EMPTY;
         }
 
         SpriteUtils.buildColumn(map, 8, 1, 2, SpriteType.TREE);
