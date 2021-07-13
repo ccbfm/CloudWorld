@@ -5,12 +5,13 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.ccbfm.cloud.world.Config;
 import com.ccbfm.cloud.world.model.MenuModel;
 import com.ccbfm.cloud.world.util.LogUtils;
 
 public class MenuView extends BaseView<MenuModel> {
 
-    private static final String[] MENU_NAME = {"日志", "成就", "加载", "保存", "退出"};
+    private static final String[] MENU_NAME = {"自己", "日志", "加载", "保存", "退出"};
 
     public MenuView(Context context, int width, int height) {
         super(context, width, height);
@@ -30,6 +31,7 @@ public class MenuView extends BaseView<MenuModel> {
             BorderView bv = BorderView.create(context, mW, height);
             bv.setGravity(Gravity.CENTER);
             bv.setText(MENU_NAME[i]);
+            bv.setTextColor(Config.COLOR_MENU);
             bv.setOnClickListener(MENU_NAME[i], clickListener);
             addView(bv, lp);
         }

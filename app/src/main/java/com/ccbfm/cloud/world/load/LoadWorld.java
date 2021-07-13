@@ -1,7 +1,6 @@
 package com.ccbfm.cloud.world.load;
 
 import com.ccbfm.cloud.world.model.GameModel;
-import com.ccbfm.cloud.world.model.MenuModel;
 import com.ccbfm.cloud.world.model.StatusModel;
 
 import java.util.LinkedList;

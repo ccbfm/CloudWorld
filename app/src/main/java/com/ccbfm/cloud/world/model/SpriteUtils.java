@@ -2,6 +2,14 @@ package com.ccbfm.cloud.world.model;
 
 public class SpriteUtils {
 
+    /**
+     *
+     * @param map map
+     * @param x 起始x
+     * @param y 起始y
+     * @param ox x跨度
+     * @param oy y跨度
+     */
     public static void buildHouse(int[][] map, int x, int y, int ox, int oy) {
         int ex = x + ox;
         int ey = y + oy;

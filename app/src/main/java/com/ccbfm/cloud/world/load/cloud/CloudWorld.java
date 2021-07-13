@@ -2,7 +2,6 @@ package com.ccbfm.cloud.world.load.cloud;
 
 import com.ccbfm.cloud.world.load.LoadModel;
 import com.ccbfm.cloud.world.load.LoadWorld;
-import com.ccbfm.cloud.world.model.MenuModel;
 import com.ccbfm.cloud.world.model.StatusModel;
 
 import java.util.LinkedList;
@@ -10,12 +9,12 @@ import java.util.LinkedList;
 public class CloudWorld extends LoadWorld {
     @Override
     protected String createKey() {
-        return null;
+        return "cloud_world";
     }
 
     @Override
     protected String createScenesKey() {
-        return null;
+        return "scenes_one";
     }
 
     @Override

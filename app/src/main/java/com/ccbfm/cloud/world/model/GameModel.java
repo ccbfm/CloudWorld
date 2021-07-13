@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class GameModel extends Model {
 
     private String key;
-    private boolean isStatus, isScenes, isMenu;
+    private boolean isStatus, isScenes;
     private StatusModel statusModel;
     private String scenesKey;
     private HashMap<String, ScenesModel> scenesModel;
@@ -56,7 +56,4 @@ public class GameModel extends Model {
         return isScenes;
     }
 
-    public boolean isMenu() {
-        return isMenu;
-    }
 }
